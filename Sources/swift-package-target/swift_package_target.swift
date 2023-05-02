@@ -1,4 +1,4 @@
-//===--- swift_package_template.swift -------------------------------------===//
+//===--- swift_package_target.swift ---------------------------------------===//
 //
 // This source file is part of the swift-library open source project
 //
