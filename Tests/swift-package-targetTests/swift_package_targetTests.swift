@@ -1,4 +1,4 @@
-//===--- swift_package_templateTests.swift --------------------------------===//
+//===--- swift_package_targetTests.swift ----------------------------------===//
 //
 // This source file is part of the swift-library open source project
 //
@@ -13,9 +13,9 @@
 //===----------------------------------------------------------------------===//
 
 import XCTest
-@testable import swift_package_template
+@testable import swift_package_target
 
-final class swift_package_templateTests: XCTestCase {
+final class swift_package_targetTests: XCTestCase {
   func testExample() throws {
     // XCTest Documenation
     // https://developer.apple.com/documentation/xctest
