@@ -23,7 +23,7 @@ Replace this paragraph with a short description of the incorrect incorrect behav
 <!-- Describe clearly and concisely what the bug is. -->
 
 ### Checklist
-- [ ] If possible, I've reproduced the issue using the `main` branch of this package
+- [ ] If possible, I've reproduced the issue using the `master` branch of this package
 - [ ] I've searched for [existing GitHub issues](https://github.com/swift-library/<#swift-package#>/issues)
 
 ### Steps to Reproduce
@@ -54,7 +54,7 @@ Describe or copy/paste the behavior you observe.
 - Swift compiler version info <!-- replace with the output of 'swiftc -version' -->
 - Xcode version info <!-- replace with the output of 'xcodebuild -version' -->
 - Deployment target: <!-- e.g. iOS 12.3 -->
-- **Swift <#swift-package-name#> version:** `0.0.1` or the `main` branch, for example.
+- **Swift <#swift-package-name#> version:** `0.0.1` or the `master` branch, for example.
 
 <!-- Add any other context about the problem as appropriate. -->
 <!-- **Additional context** -->

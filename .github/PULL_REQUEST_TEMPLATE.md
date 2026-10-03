@@ -25,5 +25,5 @@ Resolves #NNNNN, fix swift-library/<#swift-package#>#MMMMM.
 ### Checklist
 - [ ] I've added at least one test that validates that my change is working, if appropriate
 - [ ] I've followed the code style of the rest of the project
-- [ ] I've read the [Contribution Guidelines](https://github.com/swift-library/<#swift-package#>/blob/main/CONTRIBUTING.md)
+- [ ] I've read the [Contribution Guidelines](https://github.com/swift-library/<#swift-package#>/blob/master/CONTRIBUTING.md)
 - [ ] I've updated the documentation if necessary

@@ -1,4 +1,7 @@
 // swift-tools-version: 6.0
+// SPDX-License-Identifier: Apache-2.0 WITH Swift-exception
+// Copyright (c) 2023 Xudong Xu and the swift-library project authors
+
 // The swift-tools-version declares the minimum version of Swift required to build this package.
 
 import PackageDescription

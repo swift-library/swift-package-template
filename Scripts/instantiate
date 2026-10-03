@@ -39,6 +39,8 @@ def main():
         ["git", "-C", str(root), "ls-files", "--cached", "--others", "--exclude-standard", "-z"]
     ).decode().split("\0")
     replacements = {
+        "swift-library/<#swift-package#>": args.repository,
+        "<#swift-package-name#>": args.package,
         "<#swift-package#>": args.package,
         "<#swift-package-target#>": args.target,
         "swift_package_target": args.target,
