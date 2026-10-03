@@ -1,0 +1,90 @@
+#!/usr/bin/env python3
+# SPDX-License-Identifier: Apache-2.0 WITH Swift-exception
+# Copyright (c) 2026 Xudong Xu
+
+"""Create an independent Swift package from this template."""
+
+import argparse
+from datetime import date
+import json
+from pathlib import Path
+import re
+import subprocess
+import sys
+
+
+def main():
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--output", required=True, type=Path)
+    parser.add_argument("--package", required=True)
+    parser.add_argument("--target", required=True)
+    parser.add_argument("--repository", required=True)
+    parser.add_argument("--copyright", required=True)
+    args = parser.parse_args()
+    root = Path(__file__).resolve().parent.parent
+    output = args.output.resolve()
+    if not re.fullmatch(r"[a-z][a-z0-9-]*", args.package):
+        parser.error("Package names use lowercase letters, digits and hyphens")
+    if not re.fullmatch(r"[A-Za-z][A-Za-z0-9_]*", args.target):
+        parser.error("Target names must be Swift identifiers")
+    if not re.fullmatch(r"[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+", args.repository):
+        parser.error("Repository identity must be owner/repository")
+    if output == root or root in output.parents:
+        if ".build" not in output.relative_to(root).parts:
+            parser.error("Use an independent destination outside the template source")
+    if output.exists() and any(output.iterdir()):
+        parser.error("Destination must be empty")
+    output.mkdir(parents=True, exist_ok=True)
+    paths = subprocess.check_output(
+        ["git", "-C", str(root), "ls-files", "--cached", "--others", "--exclude-standard", "-z"]
+    ).decode().split("\0")
+    replacements = {
+        "<#swift-package#>": args.package,
+        "<#swift-package-target#>": args.target,
+        "swift_package_target": args.target,
+        "swift-package-target": args.target,
+        "swift-package-template": args.package,
+    }
+    for name in paths:
+        if name in {"", "Scripts/check-template", "Scripts/instantiate", ".refs.yaml"}:
+            continue
+        source = root / name
+        if not source.is_file():
+            continue
+        destination_name = name
+        text = source.read_text()
+        for old, new in replacements.items():
+            destination_name = destination_name.replace(old, new)
+            text = text.replace(old, new)
+        destination = output / destination_name
+        destination.parent.mkdir(parents=True, exist_ok=True)
+        destination.write_text(text)
+        destination.chmod(source.stat().st_mode & 0o777)
+    config = json.loads((output / ".github/release.json").read_text())
+    config["repository"] = args.repository
+    config["check_command"] = "Scripts/check"
+    (output / ".github/release.json").write_text(json.dumps(config, indent=2) + "\n")
+    (output / "NOTICE").write_text(
+        args.package + "\nCopyright (c) " + str(date.today().year) + " " + args.copyright
+        + "\n\nLicensed under Apache License 2.0 with the Swift Runtime Library Exception.\nSee LICENSE.txt for the complete terms.\n"
+    )
+    (output / ".github/CODEOWNERS").write_text("# Assign owning GitHub users or teams for this package.\n")
+    (output / "CONTRIBUTING.md").write_text(
+        "# Contributing\n\nBy submitting a contribution, you confirm your right to license it under\n"
+        + "[the package license](LICENSE.txt).\n\nUse Conventional Commit subjects and follow `.swift-format`. Run\n"
+        + "`Scripts/check` before opening a pull request. Review the\n"
+        + "[version and release policy](Documentation/Architecture/VersioningAndRelease.md)\n"
+        + "when changing compatibility, requirements or release inputs.\n"
+    )
+    (output / "README.md").write_text(
+        "# " + args.package + "\n\nA Swift library.\n\n## Install\n\n```swift\n.package(url: \"https://github.com/" + args.repository
+        + ".git\", .upToNextMinor(from: \"0.1.0\"))\n```\n\nImport `" + args.target + "` from the corresponding product.\n\n"
+        + "## Requirements\n\niOS 18+, macOS 15+, Swift tools 6.0+. The package maintains the three\nmost recent stable system generations independently of compiler requirements.\n\n"
+        + "## Maintenance\n\n[Version and release policy](Documentation/Architecture/VersioningAndRelease.md)\nowns compatibility and release acceptance. Run `Scripts/check` before submitting\nchanges.\n\n## License\n\nApache License 2.0 with the Swift Runtime Library Exception. See [LICENSE.txt](LICENSE.txt) and [NOTICE](NOTICE).\n"
+    )
+    print(output)
+    return 0
+
+
+if __name__ == "__main__":
+    sys.exit(main())

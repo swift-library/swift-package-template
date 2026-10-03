@@ -1,45 +1,27 @@
 # Swift Package Template
 
-The package template for swift library.
+Create an independently versioned Swift library with the swift-library release
+and maintenance defaults.
 
-## Usage
-
-## Adding `<#swift-package#>` as a Dependency
-
-To use the `<#swift-package#>` plugin in a SwiftPM project, 
-add it to the dependencies for your package and your target:
-
-```swift
-let package = Package(
-  // name, platforms, products, etc.
-  dependencies: [
-    // other dependencies
-    .package(url: "https://github.com/swift-library/<#swift-package#>", from: "0.0.1"),
-  ],
-  targets: [
-    .executableTarget(
-      name: "<command-line-tool>",
-      dependencies: [
-        // other dependencies
-        .product(name: "<#swift-package-target#>", package: "<#swift-package#>"),
-      ],
-      plugins: [
-        .plugin(name: "<#swift-package-target#>", package: "<#swift-package#>"),
-      ]
-    ),
-    // other targets
-  ]
-)
+```sh
+Scripts/instantiate --output ../MyLibrary --package swift-my-library \
+  --target MyLibrary --repository swift-library/swift-my-library \
+  --copyright "Your Name"
 ```
 
-### Supported Versions
+The destination must be empty. The command sets the package/module names,
+repository identity, contributor ownership and initial release inputs. Develop
+and run `Scripts/check` inside the generated repository. Enable its private
+vulnerability reporting before publishing.
 
-The most recent versions of <#swift-package#> support Swift 5.8 and newer. The minimum Swift version supported by <#swift-package#> releases are detailed below:
+The default deployment floors are iOS 18 and macOS 15, covering the current
+three-generation system window. Swift tools 6.0 is the compiler minimum.
+Compiler requirements and system support are maintained independently.
 
-<#swift-package#> | Minimum Swift Version
-----------|----------------------
-`0.0.1`   | 5.8
+- [Version and maintenance policy](Documentation/Architecture/VersioningAndRelease.md)
+- [Release guide](Documentation/Reference/ReleaseGuide.md)
+- [Organization defaults](https://github.com/swift-library/.github)
+- [Contributing](CONTRIBUTING.md)
 
-<!-- Link references for readme -->
-
-[swift]: https://github.com/apple/swift
+New libraries use Apache License 2.0 with the Swift Runtime Library Exception
+(`Apache-2.0 WITH Swift-exception`). See [LICENSE.txt](LICENSE.txt) and [NOTICE](NOTICE).

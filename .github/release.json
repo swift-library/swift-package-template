@@ -1,0 +1,33 @@
+{
+  "repository": "swift-library/swift-package-template",
+  "version_file": "VERSION",
+  "version_pattern": "^([^\\n]+)\\n?$",
+  "changelog": "CHANGELOG.md",
+  "check_command": "Scripts/check-template",
+  "ci": {
+    "include": [
+      {
+        "name": "macos-15-swift-6.0",
+        "runner": "macos-15",
+        "xcode": "16.2"
+      },
+      {
+        "name": "macos-26-swift-6.3",
+        "runner": "macos-26",
+        "xcode": "26.6"
+      }
+    ]
+  },
+  "platforms": {
+    "iOS": [
+      18,
+      26,
+      27
+    ],
+    "macOS": [
+      15,
+      26,
+      27
+    ]
+  }
+}

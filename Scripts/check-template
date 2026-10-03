@@ -1,0 +1,24 @@
+#!/bin/bash
+# SPDX-License-Identifier: Apache-2.0 WITH Swift-exception
+# Copyright (c) 2026 Xudong Xu
+set -euo pipefail
+cd "$(dirname "$0")/.."
+mkdir -p .build/release-validation
+destination=$(mktemp -d "${TMPDIR:-/tmp}/swift-package-template.XXXXXXXX")
+trap 'rm -rf "$destination"' EXIT
+Scripts/instantiate --output "$destination" --package swift-template-validation \
+  --target TemplateValidation --repository fixture/template-validation --copyright 'Template validation fixture'
+git -C "$destination" init -q
+git -C "$destination" -c user.name='Template validation' -c user.email='template-validation@example.invalid' add .
+git -C "$destination" -c user.name='Template validation' -c user.email='template-validation@example.invalid' commit -qm 'test: materialize package fixture'
+"$destination/Scripts/check"
+cp "$destination/.build/release-validation/provenance.json" .build/release-validation/materialized-package.json
+python3 - <<'PY'
+import hashlib, json, pathlib, platform, subprocess
+def git(*args):
+    return subprocess.check_output(['git', *args], text=True).strip()
+result = {'commit': git('rev-parse', 'HEAD'), 'tree': git('rev-parse', 'HEAD^{tree}'),
+          'os': platform.platform(), 'checks': ['template-instantiation', 'generated-package-check'],
+          'checker_sha256': hashlib.sha256(pathlib.Path('Scripts/check-template').read_bytes()).hexdigest()}
+pathlib.Path('.build/release-validation/provenance.json').write_text(json.dumps(result, indent=2) + '\n')
+PY

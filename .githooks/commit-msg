@@ -1,0 +1,24 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+MSG_FILE="${1:-}"
+if [[ -z "$MSG_FILE" || ! -f "$MSG_FILE" ]]; then
+  echo "commit-msg hook: missing commit message file" >&2
+  exit 1
+fi
+
+FIRST_LINE="$(sed -n '1p' "$MSG_FILE" | tr -d '\r')"
+
+if [[ "$FIRST_LINE" =~ ^Merge\  ]] || [[ "$FIRST_LINE" =~ ^Revert\ \" ]] || [[ "$FIRST_LINE" =~ ^fixup!\  ]] || [[ "$FIRST_LINE" =~ ^squash!\  ]]; then
+  exit 0
+fi
+
+PATTERN='^(build|chore|ci|docs|feat|fix|perf|refactor|revert|style|test)(\([a-z0-9._/-]+\))?(!)?: .+$'
+if [[ ! "$FIRST_LINE" =~ $PATTERN ]]; then
+  cat >&2 <<'EOERR'
+Commit message does not follow conventional format.
+Expected: <type>(<scope>): <subject>
+Allowed types: build chore ci docs feat fix perf refactor revert style test
+EOERR
+  exit 1
+fi
