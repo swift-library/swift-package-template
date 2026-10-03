@@ -1,10 +1,11 @@
 name: CI
 on:
   push:
+    branches: [master]
   pull_request:
   workflow_dispatch:
 permissions:
   contents: read
 jobs:
   validate:
-    uses: swift-library/.github/.github/workflows/swift-package-ci.yml@6b01e952243769a71183bc83ee4fcdf500c83f92
+    uses: swift-library/.github/.github/workflows/swift-package-ci.yml@b774d0807d6befd77b8f69d5316bac120eab788c

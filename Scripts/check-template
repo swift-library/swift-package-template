@@ -8,10 +8,10 @@ destination=$(mktemp -d "${TMPDIR:-/tmp}/swift-package-template.XXXXXXXX")
 trap 'rm -rf "$destination"' EXIT
 Scripts/instantiate --output "$destination" --package swift-template-validation \
   --target TemplateValidation --repository fixture/template-validation --copyright 'Template validation fixture'
-git -C "$destination" init -q
+git -C "$destination" init -q -b master
 git -C "$destination" -c user.name='Template validation' -c user.email='template-validation@example.invalid' add .
 git -C "$destination" -c user.name='Template validation' -c user.email='template-validation@example.invalid' commit -qm 'test: materialize package fixture'
-"$destination/Scripts/check"
+"$destination/Scripts/check" "$@"
 cp "$destination/.build/release-validation/provenance.json" .build/release-validation/materialized-package.json
 python3 - <<'PY'
 import hashlib, json, pathlib, platform, subprocess
