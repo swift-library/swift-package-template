@@ -2,7 +2,7 @@
 
 This document owns the package's version declaration, compatibility policy,
 system support window and release acceptance. It adopts the
-[swift-library defaults](https://github.com/swift-library/.github/blob/main/Documentation/Architecture/VersioningAndRelease.md).
+[swift-library defaults](https://github.com/swift-library/.github/blob/master/Documentation/Architecture/VersioningAndRelease.md).
 Operational commands live in the [Release Guide](../Reference/ReleaseGuide.md).
 
 ## Version Authority and Compatibility
@@ -22,6 +22,10 @@ positive sequence numbers.
 Compatibility includes public Swift APIs, serialized output, and compiler/platform
 requirements. Documentation, formatting and CI changes alone do not force a
 product release. Library consumers use next-minor bounds during 0.x.
+
+Strict formatting uses one declared formatter toolchain. Compiler compatibility
+jobs run the compiler-check scope, and the separate format-check job enforces
+the complete formatting configuration. Local checks run both scopes.
 
 ## Supported Environments
 

@@ -3,14 +3,24 @@
 # Copyright (c) 2026 Xudong Xu
 set -euo pipefail
 cd "$(dirname "$0")/.."
+case "${1:-all}" in
+  all) export RELEASE_CHECK_SCOPE=all ;;
+  --format-check) export RELEASE_CHECK_SCOPE=format ;;
+  --compiler-check) export RELEASE_CHECK_SCOPE=compiler ;;
+  *) echo 'Usage: Scripts/check [--format-check|--compiler-check]' >&2; exit 2 ;;
+esac
 mkdir -p .build/release-validation
 Scripts/validate-version --json > .build/release-validation/version.json
-python3 -B -m unittest discover -s Tests/ReleaseTools
-xcrun swift-format lint --strict --configuration .swift-format --recursive Package.swift Sources Tests
-swift test --force-resolved-versions
-swift build -c release --force-resolved-versions
+if [ "$RELEASE_CHECK_SCOPE" = all ] || [ "$RELEASE_CHECK_SCOPE" = format ]; then
+  xcrun swift-format lint --strict --configuration .swift-format --recursive Package.swift Sources Tests
+fi
+if [ "$RELEASE_CHECK_SCOPE" = all ] || [ "$RELEASE_CHECK_SCOPE" = compiler ]; then
+  python3 -B -m unittest discover -s Tests/ReleaseTools
+  swift test --force-resolved-versions
+  swift build -c release --force-resolved-versions
+fi
 python3 - <<'PY'
-import hashlib, json, pathlib, platform, subprocess
+import hashlib, json, os, pathlib, platform, subprocess
 root = pathlib.Path('.build/release-validation')
 result = json.loads((root / 'version.json').read_text())
 result['os'] = platform.platform()
@@ -18,6 +28,12 @@ result['swift'] = subprocess.check_output(['swift', '--version'], text=True).str
 result['xcode'] = subprocess.check_output(['xcodebuild', '-version'], text=True).strip()
 result['sdk'] = subprocess.check_output(['xcrun', '--sdk', 'macosx', '--show-sdk-version'], text=True).strip()
 result['validation_script_sha256'] = hashlib.sha256(pathlib.Path('Scripts/check').read_bytes()).hexdigest()
-result['checks'] = ['version', 'release-tools', 'strict-format', 'swift-test', 'release-build']
+scope = os.environ['RELEASE_CHECK_SCOPE']
+result['checks'] = ['version']
+if scope in ('all', 'format'):
+    result['checks'] += ['strict-format']
+    result['formatter'] = subprocess.check_output(['xcrun', 'swift-format', '--version'], text=True).strip()
+if scope in ('all', 'compiler'):
+    result['checks'] += ['release-tools', 'swift-test', 'release-build']
 (root / 'provenance.json').write_text(json.dumps(result, indent=2) + '\n')
 PY
