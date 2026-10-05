@@ -200,8 +200,10 @@ commits it there, and runs the fixture's `Scripts/check`.
 ### Releases
 
 Choose the version in `VERSION` and describe it in a `CHANGELOG.md` entry.
-During 0.x, compatible fixes increase PATCH, and compatible features and
-breaking changes increase MINOR; from 1.0.0, breaking changes increase MAJOR.
+The [swift-library versioning standard](https://github.com/swift-library/.github/blob/master/VERSIONING.md)
+sets the rules: during 0.x, fixes and compatible additions increase PATCH and
+breaking changes increase MINOR; from 1.0.0, compatible additions increase
+MINOR and breaking changes increase MAJOR.
 The [release guide](Documentation/Reference/ReleaseGuide.md) covers the
 sequence: run `Scripts/check`, push the candidate, verify a fresh consumer,
 create the `vVERSION` tag, and dispatch the Release workflow with that tag.
@@ -242,6 +244,9 @@ macOS 15 and Swift 6.3 on macOS 26.
 
 ## Documentation
 
+- [swift-library versioning standard](https://github.com/swift-library/.github/blob/master/VERSIONING.md):
+  version numbers, changelog format, tags, and history cleanup for every
+  swift-library package.
 - [Versioning and release policy](Documentation/Architecture/VersioningAndRelease.md):
   version authority, compatibility, the system support window, and release
   acceptance.

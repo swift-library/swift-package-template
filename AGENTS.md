@@ -47,7 +47,9 @@ points.
 
 ## Task Route
 
-Read Documentation/Architecture/VersioningAndRelease.md before changing
+Read the organization's
+[VERSIONING.md](https://github.com/swift-library/.github/blob/master/VERSIONING.md)
+and Documentation/Architecture/VersioningAndRelease.md before changing
 versions, requirements, dependencies or release workflows.
 
 - Use `README.md` as the package entry point.
