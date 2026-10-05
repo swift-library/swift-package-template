@@ -12,6 +12,16 @@ import re
 import subprocess
 import sys
 
+TEMPLATE_ONLY = {
+    "",
+    ".refs.yaml",
+    "Scripts/check-template",
+    "Scripts/instantiate",
+    "Tests/ReleaseTools/test_instantiate.py",
+}
+AUTHOR_BANNER = re.compile(r"^((?://|#) )Copyright \(c\) .*Xudong Xu.*$", re.MULTILINE)
+VERSIONING_URL = "https://github.com/swift-library/.github/blob/master/VERSIONING.md"
+
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
@@ -46,43 +56,59 @@ def main():
         "swift_package_target": args.target,
         "swift-package-target": args.target,
         "swift-package-template": args.package,
+        "Scripts/check-template": "Scripts/check",
     }
+    copyright_line = "Copyright (c) " + str(date.today().year) + " " + args.copyright
     for name in paths:
-        if name in {"", "Scripts/check-template", "Scripts/instantiate", ".refs.yaml"}:
+        if name in TEMPLATE_ONLY:
             continue
         source = root / name
         if not source.is_file():
             continue
         destination_name = name
-        text = source.read_text()
         for old, new in replacements.items():
             destination_name = destination_name.replace(old, new)
-            text = text.replace(old, new)
         destination = output / destination_name
         destination.parent.mkdir(parents=True, exist_ok=True)
-        destination.write_text(text)
+        data = source.read_bytes()
+        try:
+            text = data.decode("utf-8")
+        except UnicodeDecodeError:
+            destination.write_bytes(data)
+        else:
+            for old, new in replacements.items():
+                text = text.replace(old, new)
+            text = AUTHOR_BANNER.sub(lambda match: match.group(1) + copyright_line, text)
+            destination.write_text(text, encoding="utf-8")
         destination.chmod(source.stat().st_mode & 0o777)
-    config = json.loads((output / ".github/release.json").read_text())
+    config = json.loads((output / ".github/release.json").read_text(encoding="utf-8"))
     config["repository"] = args.repository
-    config["check_command"] = "Scripts/check"
-    (output / ".github/release.json").write_text(json.dumps(config, indent=2) + "\n")
+    (output / ".github/release.json").write_text(json.dumps(config, indent=2) + "\n", encoding="utf-8")
+    (output / "VERSION").write_text("0.1.0\n", encoding="utf-8")
+    (output / "CHANGELOG.md").write_text("# Changelog\n\n## 0.1.0\n\n- Initial package release.\n", encoding="utf-8")
     (output / "NOTICE").write_text(
-        args.package + "\nCopyright (c) " + str(date.today().year) + " " + args.copyright
-        + "\n\nLicensed under Apache License 2.0 with the Swift Runtime Library Exception.\nSee LICENSE.txt for the complete terms.\n"
+        args.package + "\n" + copyright_line
+        + "\n\nLicensed under Apache License 2.0 with the Swift Runtime Library Exception.\nSee LICENSE.txt for the complete terms.\n",
+        encoding="utf-8",
     )
-    (output / ".github/CODEOWNERS").write_text("# Assign owning GitHub users or teams for this package.\n")
+    (output / ".github/CODEOWNERS").write_text("# Assign owning GitHub users or teams for this package.\n", encoding="utf-8")
     (output / "CONTRIBUTING.md").write_text(
         "# Contributing\n\nBy submitting a contribution, you confirm your right to license it under\n"
         + "[the package license](LICENSE.txt).\n\nUse Conventional Commit subjects and follow `.swift-format`. Run\n"
         + "`Scripts/check` before opening a pull request. Review the\n"
         + "[version and release policy](Documentation/Architecture/VersioningAndRelease.md)\n"
-        + "when changing compatibility, requirements or release inputs.\n"
+        + "and the [swift-library versioning standard](" + VERSIONING_URL + ")\n"
+        + "when changing compatibility, requirements or release inputs.\n",
+        encoding="utf-8",
     )
     (output / "README.md").write_text(
         "# " + args.package + "\n\nA Swift library.\n\n## Install\n\n```swift\n.package(url: \"https://github.com/" + args.repository
         + ".git\", .upToNextMinor(from: \"0.1.0\"))\n```\n\nImport `" + args.target + "` from the corresponding product.\n\n"
         + "## Requirements\n\niOS 18+, macOS 15+, Swift tools 6.0+. The package maintains the three\nmost recent stable system generations independently of compiler requirements.\n\n"
-        + "## Maintenance\n\n[Version and release policy](Documentation/Architecture/VersioningAndRelease.md)\nowns compatibility and release acceptance. Run `Scripts/check` before submitting\nchanges.\n\n## License\n\nApache License 2.0 with the Swift Runtime Library Exception. See [LICENSE.txt](LICENSE.txt) and [NOTICE](NOTICE).\n"
+        + "## Maintenance\n\n[Version and release policy](Documentation/Architecture/VersioningAndRelease.md)\nowns compatibility and release acceptance and follows the\n"
+        + "[swift-library versioning standard](" + VERSIONING_URL + "). Run `Scripts/check`\nbefore submitting changes.\n\n"
+        + "## License\n\nApache License 2.0 with the Swift Runtime Library Exception. See [LICENSE.txt](LICENSE.txt) and [NOTICE](NOTICE).\n",
+        encoding="utf-8",
     )
     print(output)
     return 0

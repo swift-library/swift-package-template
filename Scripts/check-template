@@ -4,6 +4,14 @@
 set -euo pipefail
 cd "$(dirname "$0")/.."
 mkdir -p .build/release-validation
+checks='template-instantiation generated-package-check'
+case "${1:-all}" in
+  all|--compiler-check)
+    python3 -B -m unittest discover -s Tests/ReleaseTools -p 'test_instantiate.py'
+    checks="instantiate-tests $checks"
+    ;;
+esac
+export TEMPLATE_CHECKS="$checks"
 destination=$(mktemp -d "${TMPDIR:-/tmp}/swift-package-template.XXXXXXXX")
 trap 'rm -rf "$destination"' EXIT
 Scripts/instantiate --output "$destination" --package swift-template-validation \
@@ -14,11 +22,11 @@ git -C "$destination" -c user.name='Template validation' -c user.email='template
 "$destination/Scripts/check" "$@"
 cp "$destination/.build/release-validation/provenance.json" .build/release-validation/materialized-package.json
 python3 - <<'PY'
-import hashlib, json, pathlib, platform, subprocess
+import hashlib, json, os, pathlib, platform, subprocess
 def git(*args):
     return subprocess.check_output(['git', *args], text=True).strip()
 result = {'commit': git('rev-parse', 'HEAD'), 'tree': git('rev-parse', 'HEAD^{tree}'),
-          'os': platform.platform(), 'checks': ['template-instantiation', 'generated-package-check'],
+          'os': platform.platform(), 'checks': os.environ['TEMPLATE_CHECKS'].split(),
           'checker_sha256': hashlib.sha256(pathlib.Path('Scripts/check-template').read_bytes()).hexdigest()}
 pathlib.Path('.build/release-validation/provenance.json').write_text(json.dumps(result, indent=2) + '\n')
 PY

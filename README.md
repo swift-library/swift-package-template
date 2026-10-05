@@ -86,24 +86,17 @@ git add -A
 ```
 
 Git records the source and test directories as renames, and the
-template-only scripts `Scripts/instantiate` and `Scripts/check-template` are
-removed.
+template-only files `Scripts/instantiate`, `Scripts/check-template`, and
+`Tests/ReleaseTools/test_instantiate.py` are removed.
 
 ### Finish setup
 
 Instantiation leaves these steps to you:
 
 1. Add owners to `.github/CODEOWNERS`, which contains only a comment.
-2. In `.github/release.json`, change each `command` under `ci.include` from
-   `Scripts/check-template` to `Scripts/check` with the same option. The
-   shared CI workflow runs these commands, and the generated package does not
-   include `Scripts/check-template`.
-3. Update the copyright header in `Sources/MyLibrary/MyLibrary.swift` and
-   `Tests/MyLibraryTests/MyLibraryTests.swift`. Instantiation writes your
-   copyright holder only to `NOTICE`.
-4. Replace or remove `Documentation/Assets/Logo.svg`, which is the template's
+2. Replace or remove `Documentation/Assets/Logo.svg`, which is the template's
    logo.
-5. Replace the one-line description in the generated `README.md`.
+3. Replace the one-line description in the generated `README.md`.
 6. Enable private vulnerability reporting in the repository's security
    settings before publishing; `SECURITY.md` sends reporters there.
 7. Enable the commit-message hook with
@@ -156,14 +149,16 @@ All five options are required:
 - `--repository`: the GitHub `owner/repository`, such as
   `swift-library/swift-my-library`. It replaces `swift-library/<#swift-package#>`
   in links and sets `repository` in `.github/release.json`.
-- `--copyright`: the copyright holder that `NOTICE` names, with the current
-  year.
+- `--copyright`: the copyright holder that `NOTICE` and the copyright headers
+  of the manifest, sources, tests, and scripts name, with the current year.
 
 ### Generated files
 
 `Scripts/instantiate` copies every file that Git tracks or would track, except
-`Scripts/instantiate` and `Scripts/check-template`, and applies the
-replacements above. It then writes:
+the template-only `Scripts/instantiate`, `Scripts/check-template`, and
+`Tests/ReleaseTools/test_instantiate.py`. It applies the replacements above to
+UTF-8 text, replaces each template copyright header with your copyright
+holder, and copies other files, such as images, byte for byte. It then writes:
 
 - `README.md`, with install, requirements, maintenance, and license sections
   and a one-line description.
@@ -171,11 +166,11 @@ replacements above. It then writes:
 - `NOTICE`, with the package name, the current year, and the copyright holder.
 - `.github/CODEOWNERS`, with only a comment.
 - `.github/release.json`, with the new `repository` and with `check_command`
-  set to `Scripts/check`.
+  and every CI `command` running `Scripts/check`.
+- `VERSION` and `CHANGELOG.md` for version 0.1.0.
 
-The package starts at version 0.1.0: `VERSION` and its `CHANGELOG.md` entry
-are copied unchanged. The generated README's install snippet depends on that
-version with `.upToNextMinor(from: "0.1.0")`.
+The generated README's install snippet depends on that first version with
+`.upToNextMinor(from: "0.1.0")`.
 
 ### Checks
 
@@ -197,8 +192,10 @@ scope records its toolchain, SDK, and results under
 `.build/release-validation`.
 
 In this template repository, `Scripts/check-template` accepts the same options.
-It instantiates a fixture package in a temporary directory, commits it there,
-and runs the fixture's `Scripts/check`.
+Its compiler scope first runs `Tests/ReleaseTools/test_instantiate.py`, which
+checks binary copies, template residue, and a build and test of a generated
+package. It then instantiates a fixture package in a temporary directory,
+commits it there, and runs the fixture's `Scripts/check`.
 
 ### Releases
 
