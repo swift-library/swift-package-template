@@ -1,6 +1,7 @@
 # Release Guide
 
-Read the [Versioning and Release policy](../Architecture/VersioningAndRelease.md).
+Read the [swift-library versioning standard](https://github.com/swift-library/.github/blob/master/VERSIONING.md)
+and the [Versioning and Release policy](../Architecture/VersioningAndRelease.md).
 Select VERSION manually and add a nonempty CHANGELOG entry. Run Scripts/check,
 validate declared platform behavior, commit the candidate and push it. Verify a
 fresh remote consumer before creating the immutable vVERSION tag. Verify its

@@ -2,7 +2,7 @@
 
 This document owns the package's version declaration, compatibility policy,
 system support window and release acceptance. It adopts the
-[swift-library defaults](https://github.com/swift-library/.github/blob/master/Documentation/Architecture/VersioningAndRelease.md).
+[swift-library versioning standard](https://github.com/swift-library/.github/blob/master/VERSIONING.md).
 Operational commands live in the [Release Guide](../Reference/ReleaseGuide.md).
 
 ## Version Authority and Compatibility
@@ -13,10 +13,10 @@ these files and owns the package's CI selection. `Scripts/validate-version`
 checks them and optionally an existing `vVERSION` tag at HEAD; it leaves version
 inputs unchanged.
 
-During 0.x, compatible fixes increment PATCH, compatible features increment
-MINOR, and incompatible changes increment MINOR with an explicit upgrade note.
-From 1.0.0, incompatible changes increment MAJOR. Reset lower components when
-increasing MINOR or MAJOR. Optional previews use alpha.N, beta.N or rc.N with
+During 0.x, fixes and compatible additions increment PATCH, and incompatible
+changes increment MINOR with an explicit upgrade note. From 1.0.0, compatible
+additions increment MINOR and incompatible changes increment MAJOR. Reset lower
+components when increasing MINOR or MAJOR. Optional previews use alpha.N, beta.N or rc.N with
 positive sequence numbers.
 
 Compatibility includes public Swift APIs, serialized output, and compiler/platform

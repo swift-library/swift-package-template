@@ -27,6 +27,8 @@ code](https://swift-library.github.io/contributing/#contributing-code).
 ## Validation and Release
 
 Run Scripts/check-template in this template repository. Generated packages run
-Scripts/check. Read Documentation/Architecture/VersioningAndRelease.md before
-changing release inputs or requirements. Workflow and dependency updates need
+Scripts/check. Read the organization's
+[VERSIONING.md](https://github.com/swift-library/.github/blob/master/VERSIONING.md)
+and Documentation/Architecture/VersioningAndRelease.md before changing release
+inputs or requirements. Workflow and dependency updates need
 compatibility and CI review.
