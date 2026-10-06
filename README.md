@@ -97,10 +97,12 @@ Instantiation leaves these steps to you:
 2. Replace or remove `Documentation/Assets/Logo.svg`, which is the template's
    logo.
 3. Replace the one-line description in the generated `README.md`.
-6. Enable private vulnerability reporting in the repository's security
+4. Enable private vulnerability reporting in the repository's security
    settings before publishing; `SECURITY.md` sends reporters there.
-7. Enable the commit-message hook with
+5. Enable the commit-message hook with
    `git config --local core.hooksPath .githooks`.
+6. The bundled policy uses the swift-library owner identity. For another owner,
+   select and pin that organization's policy workflow before opening pull requests.
 
 ## Quick start
 
@@ -260,8 +262,8 @@ macOS 15 and Swift 6.3 on macOS 26.
 
 Read [CONTRIBUTING.md](CONTRIBUTING.md) and the
 [code of conduct](CODE_OF_CONDUCT.md) before opening a pull request, and run
-`Scripts/check-template` before submitting changes. `Scripts/instantiate` reads
-every file as UTF-8 text, so keep template files text-only. Report
+`Scripts/check-template` before submitting changes. `Scripts/instantiate` substitutes names in UTF-8 text and preserves binary
+assets byte for byte. Report
 vulnerabilities through the private route in [SECURITY.md](SECURITY.md).
 
 ## License
