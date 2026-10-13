@@ -85,16 +85,15 @@ def main():
     config["repository"] = args.repository
     (output / ".github/release.json").write_text(json.dumps(config, indent=2) + "\n", encoding="utf-8")
     (output / "VERSION").write_text("0.1.0\n", encoding="utf-8")
-    (output / "CHANGELOG.md").write_text("# Changelog\n\n## 0.1.0\n\n- Initial package release.\n", encoding="utf-8")
+    (output / "CHANGELOG.md").write_text("# Changelog\n\n## Unreleased\n\n## 0.1.0\n\n- Initial package release.\n", encoding="utf-8")
     (output / "NOTICE").write_text(
         args.package + "\n" + copyright_line
         + "\n\nLicensed under Apache License 2.0 with the Swift Runtime Library Exception.\nSee LICENSE.txt for the complete terms.\n",
         encoding="utf-8",
     )
-    (output / ".github/CODEOWNERS").write_text("# Assign owning GitHub users or teams for this package.\n", encoding="utf-8")
     (output / "CONTRIBUTING.md").write_text(
         "# Contributing\n\nBy submitting a contribution, you confirm your right to license it under\n"
-        + "[the package license](LICENSE.txt).\n\nUse Conventional Commit subjects and follow `.swift-format`. Run\n"
+        + "[the package license](LICENSE.txt).\n\nExternal contributions are welcome. Use a Conventional Commit PR title and follow `.swift-format`. Run\n"
         + "`Scripts/check` before opening a pull request. Review the\n"
         + "[version and release policy](Documentation/Architecture/VersioningAndRelease.md)\n"
         + "and the [swift-library versioning standard](" + VERSIONING_URL + ")\n"
@@ -104,7 +103,7 @@ def main():
     (output / "README.md").write_text(
         "# " + args.package + "\n\nA Swift library.\n\n## Install\n\n```swift\n.package(url: \"https://github.com/" + args.repository
         + ".git\", .upToNextMinor(from: \"0.1.0\"))\n```\n\nImport `" + args.target + "` from the corresponding product.\n\n"
-        + "## Requirements\n\niOS 18+, macOS 15+, Swift tools 6.0+. The package maintains the three\nmost recent stable system generations independently of compiler requirements.\n\n"
+        + "## Requirements\n\niOS 15+, macOS 12+, Swift tools 6.0+. The package maintains the three\nmost recent stable system generations independently of compiler requirements.\n\n"
         + "## Maintenance\n\n[Version and release policy](Documentation/Architecture/VersioningAndRelease.md)\nowns compatibility and release acceptance and follows the\n"
         + "[swift-library versioning standard](" + VERSIONING_URL + "). Run `Scripts/check`\nbefore submitting changes.\n\n"
         + "## License\n\nApache License 2.0 with the Swift Runtime Library Exception. See [LICENSE.txt](LICENSE.txt) and [NOTICE](NOTICE).\n",

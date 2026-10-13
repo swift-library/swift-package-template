@@ -1,5 +1,10 @@
 # Changelog
 
+## Unreleased
+
+- Generate packages with iOS 15 and macOS 12 deployment floors.
+- Adopt shared validation and community defaults in generated packages.
+
 ## 0.1.0
 
 - `Scripts/instantiate` creates an independent Swift package from the template.

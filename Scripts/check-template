@@ -12,7 +12,7 @@ case "${1:-all}" in
     ;;
 esac
 export TEMPLATE_CHECKS="$checks"
-destination=$(mktemp -d "${TMPDIR:-/tmp}/swift-package-template.XXXXXXXX")
+destination=$(mktemp -d "$PWD/.build/template.XXXXXXXX")
 trap 'rm -rf "$destination"' EXIT
 Scripts/instantiate --output "$destination" --package swift-template-validation \
   --target TemplateValidation --repository fixture/template-validation --copyright 'Template validation fixture'
