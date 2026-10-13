@@ -88,7 +88,13 @@ CONTRIBUTING and NOTICE files. It sets version 0.1.0 with an Unreleased changelo
 section and initial release notes. Every generated CI command runs
 `Scripts/check`. Install snippets use a next-minor requirement for version 0.1.0.
 
-You can also instantiate directly from a clone of a selected template tag.
+To instantiate from a selected template release, clone its tag:
+
+```sh
+git clone --branch v0.1.1 --depth 1 https://github.com/swift-library/swift-package-template.git
+cd swift-package-template
+```
+
 The destination is an independent package; initialize its Git repository and
 commit its source before running the package check.
 
