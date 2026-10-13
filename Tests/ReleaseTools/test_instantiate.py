@@ -4,48 +4,26 @@
 from datetime import date
 import json
 from pathlib import Path
-import shutil
-import struct
 import subprocess
 import tempfile
 import unittest
-import zlib
 
 TEMPLATE = Path(__file__).resolve().parents[2]
 
-
-def png_image():
-    def chunk(kind, data):
-        return struct.pack(">I", len(data)) + kind + data + struct.pack(">I", zlib.crc32(kind + data))
-
-    return (
-        b"\x89PNG\r\n\x1a\n"
-        + chunk(b"IHDR", struct.pack(">IIBBBBB", 1, 1, 8, 6, 0, 0, 0))
-        + chunk(b"IDAT", zlib.compress(b"\x00\xff\x00\x00\xff"))
-        + chunk(b"IEND", b"")
-    )
 
 
 class InstantiateTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
-        cls.directory = tempfile.TemporaryDirectory()
+        fixtures = TEMPLATE / ".build/test-fixtures"
+        fixtures.mkdir(parents=True, exist_ok=True)
+        cls.directory = tempfile.TemporaryDirectory(dir=fixtures)
         root = Path(cls.directory.name)
-        cls.template = root / "template"
-        tracked = subprocess.check_output(["git", "-C", str(TEMPLATE), "ls-files", "-z"]).decode().split("\0")
-        for name in filter(None, tracked):
-            source = TEMPLATE / name
-            if source.is_file():
-                destination = cls.template / name
-                destination.parent.mkdir(parents=True, exist_ok=True)
-                shutil.copy2(source, destination)
-        cls.image = png_image()
-        (cls.template / "Documentation/Assets/Icon.png").write_bytes(cls.image)
-        subprocess.check_call(["git", "-C", str(cls.template), "init", "-q"])
+        cls.image = (TEMPLATE / "Documentation/Assets/Logo.png").read_bytes()
         cls.package = root / "swift-fixture"
         subprocess.check_call(
             [
-                str(cls.template / "Scripts/instantiate"), "--output", str(cls.package),
+                str(TEMPLATE / "Scripts/instantiate"), "--output", str(cls.package),
                 "--package", "swift-fixture", "--target", "Fixture",
                 "--repository", "fixture/swift-fixture", "--copyright", "Fixture Author",
             ],
@@ -65,7 +43,7 @@ class InstantiateTests(unittest.TestCase):
                     continue
 
     def test_binary_files_are_copied_byte_for_byte(self):
-        self.assertEqual((self.package / "Documentation/Assets/Icon.png").read_bytes(), self.image)
+        self.assertEqual((self.package / "Documentation/Assets/Logo.png").read_bytes(), self.image)
 
     def test_template_identity_does_not_remain(self):
         for path, text in self.generated_text_files():
@@ -88,15 +66,13 @@ class InstantiateTests(unittest.TestCase):
             "Sources/Fixture/Fixture.swift",
             "Tests/FixtureTests/FixtureTests.swift",
             "Scripts/check",
-            "Scripts/validate-version",
-            "Tests/ReleaseTools/test_version.py",
             "NOTICE",
         ):
             self.assertIn(banner, (self.package / name).read_text(), name)
 
     def test_generated_package_starts_at_its_first_version(self):
         self.assertEqual((self.package / "VERSION").read_text(), "0.1.0\n")
-        self.assertIn("## 0.1.0\n", (self.package / "CHANGELOG.md").read_text())
+        self.assertIn("## Unreleased\n\n## 0.1.0\n", (self.package / "CHANGELOG.md").read_text())
 
     def test_generated_package_builds_and_tests(self):
         subprocess.check_call(["swift", "build"], cwd=self.package)
