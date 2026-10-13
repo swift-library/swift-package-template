@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+## 0.1.1
+
 - Generate packages with iOS 15 and macOS 12 deployment floors.
 - Adopt shared validation and community defaults in generated packages.
 
