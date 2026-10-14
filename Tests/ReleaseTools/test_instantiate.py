@@ -7,6 +7,7 @@ from pathlib import Path
 import subprocess
 import tempfile
 import unittest
+from test_workflows import check_callers
 
 TEMPLATE = Path(__file__).resolve().parents[2]
 
@@ -73,6 +74,10 @@ class InstantiateTests(unittest.TestCase):
     def test_generated_package_starts_at_its_first_version(self):
         self.assertEqual((self.package / "VERSION").read_text(), "0.1.0\n")
         self.assertIn("## Unreleased\n\n## 0.1.0\n", (self.package / "CHANGELOG.md").read_text())
+
+    def test_generated_workflows_keep_validation_and_policy_independent(self):
+        check_callers(self, self.package)
+        self.assertFalse((self.package / 'Tests/ReleaseTools/test_workflows.py').exists())
 
     def test_generated_package_builds_and_tests(self):
         subprocess.check_call(["swift", "build"], cwd=self.package)
