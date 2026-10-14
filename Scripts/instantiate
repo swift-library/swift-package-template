@@ -18,6 +18,7 @@ TEMPLATE_ONLY = {
     "Scripts/check-template",
     "Scripts/instantiate",
     "Tests/ReleaseTools/test_instantiate.py",
+    "Tests/ReleaseTools/test_workflows.py",
 }
 AUTHOR_BANNER = re.compile(r"^((?://|#) )Copyright \(c\) .*Xudong Xu.*$", re.MULTILINE)
 VERSIONING_URL = "https://github.com/swift-library/.github/blob/master/VERSIONING.md"

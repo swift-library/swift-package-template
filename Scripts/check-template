@@ -7,7 +7,7 @@ mkdir -p .build/release-validation
 checks='template-instantiation generated-package-check'
 case "${1:-all}" in
   all|--compiler-check)
-    python3 -B -m unittest discover -s Tests/ReleaseTools -p 'test_instantiate.py'
+    python3 -B -m unittest discover -s Tests/ReleaseTools -p 'test_*.py'
     checks="instantiate-tests $checks"
     ;;
 esac
