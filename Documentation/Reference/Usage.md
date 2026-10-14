@@ -53,7 +53,8 @@ The generator substitutes package and target identities in tracked text files
 and paths, preserves binary assets, and writes package-specific README,
 CONTRIBUTING and NOTICE files. It sets version 0.1.0 with an Unreleased changelog
 section and initial release notes. Every generated CI command runs
-`Scripts/check`. Install snippets use a next-minor requirement for version 0.1.0.
+`Scripts/check`. The generated Install requirement follows `master` until the first release;
+select a next-minor requirement once that tag is published.
 
 To instantiate from a selected template release, clone its tag:
 

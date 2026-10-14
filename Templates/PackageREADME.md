@@ -46,8 +46,12 @@ import {{target}}
 Add the package dependency and select the `{{target}}` product:
 
 ```swift
-.package(url: "https://github.com/{{repository}}.git", .upToNextMinor(from: "0.1.0"))
+.package(url: "https://github.com/{{repository}}.git", branch: "master")
 ```
+
+> [!NOTE]
+> No tagged release is published yet. This requirement follows `master`;
+> select a next-minor version requirement after the first release.
 
 ## Usage
 
