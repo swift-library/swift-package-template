@@ -17,6 +17,8 @@ TEMPLATE_ONLY = {
     ".refs.yaml",
     "Scripts/check-template",
     "Scripts/instantiate",
+    "Templates/PackageREADME.md",
+    "Documentation/Reference/Usage.md",
     "Tests/ReleaseTools/test_instantiate.py",
     "Tests/ReleaseTools/test_workflows.py",
 }
@@ -101,15 +103,11 @@ def main():
         + "when changing compatibility, requirements or release inputs.\n",
         encoding="utf-8",
     )
-    (output / "README.md").write_text(
-        "# " + args.package + "\n\nA Swift library.\n\n## Install\n\n```swift\n.package(url: \"https://github.com/" + args.repository
-        + ".git\", .upToNextMinor(from: \"0.1.0\"))\n```\n\nImport `" + args.target + "` from the corresponding product.\n\n"
-        + "## Requirements\n\niOS 15+, macOS 12+, Swift tools 6.0+. The package maintains the three\nmost recent stable system generations independently of compiler requirements.\n\n"
-        + "## Maintenance\n\n[Version and release policy](Documentation/Architecture/VersioningAndRelease.md)\nowns compatibility and release acceptance and follows the\n"
-        + "[swift-library versioning standard](" + VERSIONING_URL + "). Run `Scripts/check`\nbefore submitting changes.\n\n"
-        + "## License\n\nApache License 2.0 with the Swift Runtime Library Exception. See [LICENSE.txt](LICENSE.txt) and [NOTICE](NOTICE).\n",
-        encoding="utf-8",
-    )
+    readme = (root / "Templates/PackageREADME.md").read_text(encoding="utf-8")
+    for key, value in {"package": args.package, "target": args.target,
+                       "repository": args.repository}.items():
+        readme = readme.replace("{{" + key + "}}", value)
+    (output / "README.md").write_text(readme, encoding="utf-8")
     print(output)
     return 0
 
