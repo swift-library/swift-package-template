@@ -2,6 +2,9 @@
 
 ## Unreleased
 
+- Generated packages document releases in `Documentation/Reference/Release.md`;
+  version rules stay in the organization VERSIONING.
+
 ## 0.1.1
 
 - Generate packages with iOS 15 and macOS 12 deployment floors.

@@ -64,8 +64,7 @@ Replace the Quick look with a working example of your public API. Put detailed e
 
 ## Documentation
 
-- [Versioning and release](Documentation/Architecture/VersioningAndRelease.md)
-- [Release guide](Documentation/Reference/ReleaseGuide.md)
+- [Release](Documentation/Reference/Release.md): release facts and mechanics; version rules are in VERSIONING.
 - [Changelog](CHANGELOG.md)
 
 ## Contributing

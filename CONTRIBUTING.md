@@ -5,7 +5,7 @@ run `Scripts/check-template` before submitting changes. Follow `.swift-format`
 for Swift sources. Generated packages run `Scripts/check`.
 
 Read the [shared release standard](https://github.com/swift-library/.github/blob/master/VERSIONING.md)
-and [package validation requirements](Documentation/Architecture/VersioningAndRelease.md)
+and [package validation requirements](Documentation/Reference/Release.md)
 before changing release inputs or requirements. Maintainers follow the shared
 [signing instructions](https://github.com/swift-library/.github/blob/master/MAINTENANCE.md#signing).
 

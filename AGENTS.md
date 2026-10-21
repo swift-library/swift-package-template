@@ -47,10 +47,10 @@ points.
 
 ## Task Route
 
-Read the organization's
-[VERSIONING.md](https://github.com/swift-library/.github/blob/master/VERSIONING.md)
-and Documentation/Architecture/VersioningAndRelease.md before changing
-versions, requirements, dependencies or release workflows.
+- Before changing versions, dependencies, packaging or release workflows, read
+  `VERSIONING.md`, or the organization VERSIONING the project adopts, for
+  version rules and `Documentation/Reference/Release.md` for this repository's
+  release facts and check entry points.
 
 - Use `README.md` as the package entry point.
 - Use `Package.swift` for package graph, products, targets, and dependencies.
@@ -77,10 +77,11 @@ versions, requirements, dependencies or release workflows.
 
 ### Compatibility and versioning
 
-- Flag a change to public API or observable behavior, including a raised
-  minimum platform or Swift version, without the change record and version
-  bump `Documentation/Architecture/VersioningAndRelease.md` requires. Safe
-  path: record the change under the next version with that bump.
+- Flag a change to the compatibility surface recorded in
+  `Documentation/Reference/Release.md`, such as public API, observable
+  behavior or a raised minimum platform or Swift version, without the
+  changelog entry and version bump VERSIONING requires. Safe path: record the
+  change under the next version with that bump.
 
 ### Claims
 
