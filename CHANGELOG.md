@@ -2,10 +2,8 @@
 
 ## Unreleased
 
-- Generated packages document releases in their own
-  `Documentation/Reference/Release.md`, rendered from `Templates/PackageRelease.md`
-  instead of copying the template's release reference; version rules stay in
-  the organization VERSIONING.
+- Generated packages document releases in `Documentation/Reference/Release.md`;
+  version rules stay in the organization VERSIONING.
 
 ## 0.1.1
 

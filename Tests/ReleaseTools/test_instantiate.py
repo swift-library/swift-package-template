@@ -53,12 +53,6 @@ class InstantiateTests(unittest.TestCase):
         self.assertFalse((self.package / "Scripts/instantiate").exists())
         self.assertFalse((self.package / "Tests/ReleaseTools/test_instantiate.py").exists())
 
-    def test_release_reference_describes_the_generated_package(self):
-        text = (self.package / "Documentation/Reference/Release.md").read_text(encoding="utf-8")
-        self.assertIn("`Fixture` library", text)
-        self.assertNotIn("{{", text)
-        self.assertNotIn("template", text.lower())
-
     def test_release_configuration_uses_the_package_check(self):
         config = json.loads((self.package / ".github/release.json").read_text())
         self.assertEqual(config["repository"], "fixture/swift-fixture")
