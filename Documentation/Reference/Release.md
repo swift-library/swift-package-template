@@ -15,7 +15,7 @@ restate those rules.
 
 | Shipped component | Version meaning | Version source | Mirrors and derived fields | Update and read-only check |
 | --- | --- | --- | --- | --- |
-| swift-package-template | Template release | `VERSION` | `CHANGELOG.md` records its behavior. | Not established. |
+| swift-package-template | Template release | `VERSION`, named by `version_file` in [`.github/release.json`](../../.github/release.json) | `CHANGELOG.md` records its behavior. | Not established. |
 
 Generated packages start at version 0.1.0 and release independently.
 
@@ -57,5 +57,5 @@ Evidence belongs in `.build/release-validation`.
 | Version update and check | Not established. | Not established. |
 | Candidate validation and build | `Scripts/check-template`; `Scripts/check-template --compiler-check`; `Scripts/check-template --format-check` | Not established. |
 | Status and interrupted-run recovery | Not established. | Not established. |
-| Acceptance and publication | Resolve the remote tag from a fresh consumer, instantiate a package from that tag and run the generated package's `Scripts/check`. | Not established. |
+| Acceptance and publication | Run [`Release`](../../.github/workflows/release.yml) with the accepted tag; it validates the tag and publishes the GitHub release. Resolve the remote tag from a fresh consumer, instantiate a package from that tag and run the generated package's `Scripts/check`. | Repository write access to run workflows |
 | Cleanup | Not established. | Not established. |
