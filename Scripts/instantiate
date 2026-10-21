@@ -18,6 +18,7 @@ TEMPLATE_ONLY = {
     "Scripts/check-template",
     "Scripts/instantiate",
     "Templates/PackageREADME.md",
+    "Templates/PackageRelease.md",
     "Documentation/Reference/Usage.md",
     "Tests/ReleaseTools/test_instantiate.py",
     "Tests/ReleaseTools/test_workflows.py",
@@ -103,11 +104,13 @@ def main():
         + "when changing compatibility, requirements or release inputs.\n",
         encoding="utf-8",
     )
-    readme = (root / "Templates/PackageREADME.md").read_text(encoding="utf-8")
-    for key, value in {"package": args.package, "target": args.target,
-                       "repository": args.repository}.items():
-        readme = readme.replace("{{" + key + "}}", value)
-    (output / "README.md").write_text(readme, encoding="utf-8")
+    values = {"package": args.package, "target": args.target, "repository": args.repository}
+    for source, target in (("Templates/PackageREADME.md", "README.md"),
+                           ("Templates/PackageRelease.md", "Documentation/Reference/Release.md")):
+        text = (root / source).read_text(encoding="utf-8")
+        for key, value in values.items():
+            text = text.replace("{{" + key + "}}", value)
+        (output / target).write_text(text, encoding="utf-8")
     print(output)
     return 0
 
