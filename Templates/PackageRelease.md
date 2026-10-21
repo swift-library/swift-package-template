@@ -48,7 +48,7 @@ Evidence belongs in `.build/release-validation`.
 | Operation | Existing command or explicit manual procedure | Required access |
 | --- | --- | --- |
 | Version update and check | Update `VERSION` and `CHANGELOG.md` manually; CI runs the shared validator | Repository write access |
-| Candidate validation and build | `Scripts/check`; `Scripts/check --compiler-check`; `Scripts/check --format-check` | macOS with Xcode (`xcodebuild`, `xcrun`), Python 3 and Git |
+| Candidate validation and build | `Scripts/check`; `Scripts/check --compiler-check`; `Scripts/check --format-check` | Local Swift toolchain |
 | Status and interrupted-run recovery | Not established. | Not established. |
 | Acceptance and publication | Run [`Release`](../../.github/workflows/release.yml) with the accepted tag; it validates the tag and publishes the GitHub release. Then resolve the tag from a fresh consumer package. | Repository write access to run workflows |
 | Cleanup | Not established. | Not established. |
