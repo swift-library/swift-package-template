@@ -3,9 +3,10 @@
 Release status: <implemented, partly manual, or not established; cite evidence>.
 
 Version rules for swift-package-template, covering tags, release timing, choosing the
-next version and the changelog, are in <[VERSIONING](../../VERSIONING.md), or
-the organization VERSIONING the project adopts>. This document records the
-repository's release facts and mechanics and does not restate those rules.
+next version and the changelog, are in <a link to the repository's root
+VERSIONING.md, or to the organization VERSIONING the project adopts>. This
+document records the repository's release facts and mechanics and does not
+restate those rules.
 
 <If an existing document already owns these facts, complete that document and
 route readers to it instead of maintaining two copies.>
