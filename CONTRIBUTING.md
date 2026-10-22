@@ -1,13 +1,29 @@
 # Contributing
 
-External contributions are welcome. Use a Conventional Commit PR title and
-run `Scripts/check-template` before submitting changes. Follow `.swift-format`
-for Swift sources. Generated packages run `Scripts/check`.
+Keep repository documentation changes small, boundary-first, and placed by role.
 
-Read the [shared release standard](https://github.com/swift-library/.github/blob/master/VERSIONING.md)
-and [package validation requirements](Documentation/Reference/Release.md)
-before changing release inputs or requirements. Maintainers follow the shared
-[signing instructions](https://github.com/swift-library/.github/blob/master/MAINTENANCE.md#signing).
+## Where To Change
 
-By submitting a contribution, you confirm your right to license it under
-[Apache-2.0 WITH Swift-exception](LICENSE.txt).
+- Route instructions: `AGENTS.md`
+- Index and placement guidance: `README`-class files
+- Current canonical structure and placement guidance:
+  `Documentation/Architecture/*`
+- Design-in-progress: `Documentation/Proposals/*` when that subtree is present
+- Historical record: `Documentation/Decisions/*`, `Documentation/Migrations/*`, and
+  `Documentation/Archive/*` when those subtrees are present
+- Reference material and supporting examples: `Documentation/Reference/*` when that
+  subtree is present
+- GitHub-facing governance and collaboration files: `.github/*`
+- Repo-wide contributor policy: root governance files such as `CONTRIBUTING.md`
+
+## Placement Discipline
+
+- Keep route instructions in `AGENTS.md`.
+- Keep repository and subtree indexes in `README`-class files.
+- Keep current canonical structure in `Documentation/Architecture/*`.
+- Keep design-in-progress in `Documentation/Proposals/*` when that subtree is
+  present.
+- Keep historical material in `Documentation/Decisions/*`,
+  `Documentation/Migrations/*`, and `Documentation/Archive/*` when those
+  subtrees are present.
+- Keep GitHub-facing collaboration files in `.github/`.

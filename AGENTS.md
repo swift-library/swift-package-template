@@ -1,15 +1,36 @@
 # swift-package-template Agent Guide
 
-Read `README.md` first for repository purpose, package surface, and entry
-points.
+Read `README.md` first for repository purpose and entry points.
+Apply this guide before making changes.
 
 ## First-Principles Work
 
-- Name the behavior, root cause, invariant, owner, data flow, and validation
-  before changing reusable files.
-- Change the owning artifact, not the nearest convenient file.
-- Keep concrete values in the artifact that owns them.
-- Validate Swift package changes with package-local build or test checks.
+Before changing code, docs, schemas, scripts, templates, examples, governance,
+or automation, reduce the task to observable behavior, root cause, invariant,
+owner, data flow, and validation.
+
+- Do not silently choose among plausible interpretations. State assumptions,
+  surface conflicts, and ask when the decision materially changes the result.
+- Deliver the complete requested behavior with bounded design. Do not stop at a
+  toy result when production behavior is requested, and do not add abstraction,
+  configurability, workflow machinery, or future-facing features unless the
+  request, source evidence, or owning invariant requires them.
+- Change the owning layer, not the nearest convenient file.
+- Keep changes traceable to the request, source evidence, or owning invariant.
+- Do not clean up, reformat, rename, or refactor unrelated nearby material
+  unless it is required by the request or owning invariant.
+- Use the strongest feasible validation for the result. If validation is
+  skipped, say what was skipped and why.
+
+Use this check:
+
+1. What behavior is wrong, missing, or at risk?
+2. What root cause explains it?
+3. What invariant must hold?
+4. Which artifact, layer, or workflow owns it?
+5. What data or decision flows into that owner?
+6. What remains variable, configurable, or case-local?
+7. What evidence proves the result beyond one literal case?
 
 ## Canonical Artifacts
 
@@ -49,29 +70,77 @@ points.
 
 - Before changing versions, dependencies, packaging or release workflows, read
   `VERSIONING.md`, or the organization VERSIONING the project adopts, for
-  version rules and `Documentation/Reference/Release.md` for this repository's
-  release facts and check entry points.
+  version rules and `Documentation/Reference/Release.md` for this repository's release facts and check
+  entry points.
 
-- Use `README.md` as the package entry point.
-- Use `Package.swift` for package graph, products, targets, and dependencies.
-- Keep source changes under `Sources/` and tests under `Tests/`.
+- For repository-native documentation placement, read `Documentation/README.md`
+  before editing.
+- For current canonical structure, read
+  `Documentation/Architecture/README.md` and the relevant architecture files.
+- For design-in-progress, use `Documentation/Proposals/*` when that subtree is
+  present.
+- For change history, consult `Documentation/Decisions/*`,
+  `Documentation/Migrations/*`, and `Documentation/Archive/*` when those
+  subtrees are present.
 - For GitHub-facing collaboration files, use `.github/` and root governance
-  files when present.
+  files.
+- Stop and clarify before mixing route instructions into `README` files or
+  index text into `AGENTS.md`.
 
 ## Authority
 
-- `AGENTS.md` is the agent guide for package work, including its code review
-  rules.
-- `README.md` is the user-facing package manual and index.
-- `Package.swift` owns SwiftPM package structure.
-- Source and test files own implementation behavior.
+- `AGENTS.md` is the agent guide: first-principles guardrails, task
+  route, authority boundaries, boundary guardrails, and code review rules.
+- `README`-class files index scope and placement.
+- `Documentation/Architecture/*` is current truth.
+- `Documentation/Proposals/*` is proposal space when that subtree is present.
+- `Documentation/Decisions/*`, `Documentation/Migrations/*`, and
+  `Documentation/Archive/*` are history when those subtrees are present.
+- `.github/*` is GitHub-facing governance.
 
 ## Boundary Guardrails
 
-- Do not promote machine-local paths, one-run state, or fixture-only values into
-  reusable docs, scripts, templates, or automation.
-- If a value changes by input or environment, pass it in, configure it, derive
-  it, or link to the owning artifact.
+After the owner and invariant are clear, classify concrete values by stability,
+variability, and ownership before writing reusable artifacts.
+
+Do not promote context-bound values into reusable artifacts. A value is
+context-bound if it depends on the current machine, local workspace, current
+input, one fixture, one runtime run, one user-specific path, or temporary
+execution state.
+
+Keep shipped documentation focused on current product facts, supported behavior,
+and operating guidance. Keep temporary implementation notes, local evidence,
+local paths, run-specific artifacts, and historical comparison notes out of
+README files, Reference docs, API docs, and bundled user-facing skills. Promote
+only accepted decision records into
+`Documentation/Decisions/*` and durable transition or cutover records into
+`Documentation/Migrations/*`.
+
+Use this decision test:
+
+- If a value changes by input, get it from input, spec, config, parameters, or
+  an explicit user decision.
+- If a value changes by environment, get it from configuration, runtime state,
+  environment variables, or local execution notes.
+- If a value belongs only to one example, fixture, or run, keep it there. Do
+  not generalize it into reusable docs, schemas, templates, scripts,
+  validation rules, or automation.
+- If the artifact being edited is not the source of truth for the value, do not
+  hardcode it there. Pass it in, derive it, configure it, or link to the
+  owning artifact.
+- Only stable invariants and values owned by the current artifact may be fixed
+  in reusable artifacts.
+
+Classify concrete values before writing:
+
+1. Name the variable parts.
+2. Decide which artifact owns each variable.
+3. Replace context-bound literals with placeholders, parameters, config keys,
+   derived values, or links to the owning artifact.
+4. Keep concrete literals only inside the artifact that owns them.
+
+When in doubt, use a placeholder, parameter, configuration key, or repo-owned
+source of truth instead of a literal value.
 
 ## Code Review Rules
 
@@ -104,5 +173,7 @@ points.
 
 ## Operating Notes
 
-- Keep this guide compact. Put durable user-facing explanations in `README.md`
-  or focused docs.
+- Keep Agent Guide and Index separate.
+- Keep current truth out of proposal and history subtrees when they are
+  present.
+- Keep GitHub collaboration configuration out of `Documentation/`.

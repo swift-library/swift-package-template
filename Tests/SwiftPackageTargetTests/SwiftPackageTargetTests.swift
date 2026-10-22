@@ -1,11 +1,11 @@
 // SPDX-License-Identifier: Apache-2.0 WITH Swift-exception
-// Copyright (c) 2023 Xudong Xu
+// Copyright (c) <#year#> <#copyright-holder#>
 
 import XCTest
 
-@testable import swift_package_target
+@testable import SwiftPackageTarget
 
-final class swift_package_targetTests: XCTestCase {
+final class SwiftPackageTargetTests: XCTestCase {
   func testExample() throws {
     // XCTest Documenation
     // https://developer.apple.com/documentation/xctest
