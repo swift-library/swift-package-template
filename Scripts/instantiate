@@ -98,7 +98,7 @@ def main():
         "# Contributing\n\nBy submitting a contribution, you confirm your right to license it under\n"
         + "[the package license](LICENSE.txt).\n\nExternal contributions are welcome. Use a Conventional Commit PR title and follow `.swift-format`. Run\n"
         + "`Scripts/check` before opening a pull request. Review the\n"
-        + "[version and release policy](Documentation/Architecture/VersioningAndRelease.md)\n"
+        + "[release facts and mechanics](Documentation/Reference/Release.md)\n"
         + "and the [swift-library versioning standard](" + VERSIONING_URL + ")\n"
         + "when changing compatibility, requirements or release inputs.\n",
         encoding="utf-8",

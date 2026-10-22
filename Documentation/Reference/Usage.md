@@ -89,5 +89,5 @@ then builds and tests a generated package and runs that package's check command.
 ## Releases
 
 Follow the [shared release procedure](https://github.com/swift-library/.github/blob/master/VERSIONING.md#release-procedure)
-and the [template release guide](../../Documentation/Reference/ReleaseGuide.md).
+and the [template release guide](../../Documentation/Reference/Release.md).
 Generated packages start their own independent release history.

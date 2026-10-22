@@ -73,9 +73,7 @@ GitHub CLI is optional.
 ## Documentation
 
 - [Usage guide](Documentation/Reference/Usage.md): examples, behavior, and limits.
-- [Versioning and release](Documentation/Architecture/VersioningAndRelease.md):
-  the template's compatibility surface and validation requirements.
-- [Release guide](Documentation/Reference/ReleaseGuide.md): package-specific acceptance.
+- [Release](Documentation/Reference/Release.md): release facts and mechanics; version rules are in VERSIONING.
 - [Organization defaults](https://github.com/swift-library/.github): shared
   workflows, contribution and release standards.
 - [Changelog](CHANGELOG.md)
