@@ -38,7 +38,7 @@
 
 ```bash
 swift build
-Scripts/check
+swift test
 ```
 
 ## Documentation Entry Points
