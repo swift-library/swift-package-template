@@ -1,23 +1,18 @@
 name: Release
 on:
-  workflow_dispatch:
-    inputs:
-      tag:
-        description: Existing accepted version tag; select the same tag as the workflow ref
-        required: true
-        type: string
+  push:
+    tags: ['v*']
 permissions:
   contents: read
   actions: read
 jobs:
   validate:
-    if: github.ref == format('refs/tags/{0}', inputs.tag)
     uses: swift-library/github-workflows/.github/workflows/swift-package.yml@13b7e934da06a98f1b4ee11bd09cba85c84f458c
-  publish:
+  release:
     needs: validate
     permissions:
       contents: write
     uses: swift-library/github-workflows/.github/workflows/swift-package-release.yml@13b7e934da06a98f1b4ee11bd09cba85c84f458c
     with:
-      tag: ${{ inputs.tag }}
+      tag: ${{ github.ref_name }}
       accepted_commit: ${{ github.sha }}
