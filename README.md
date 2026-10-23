@@ -10,7 +10,7 @@
 
 ## Requirements
 
-- Swift 6.0 or later; iOS 15, macOS 12
+- Swift 6.3 or later; iOS 18, macOS 15
 
 ## Installation
 
