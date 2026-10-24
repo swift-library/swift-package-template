@@ -1,0 +1,56 @@
+name: Upstreams
+on:
+  push:
+    branches: [master]
+  pull_request:
+    types: [opened, synchronize, reopened]
+  workflow_dispatch:
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+permissions:
+  contents: read
+jobs:
+  upstreams:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - name: Compare documentation with the swiftpm-docs export
+        uses: swift-library/skills/skills/swiftpm-docs/scripts@1f733502b2bd8005f63cd5a87be4b87768e99adf
+        with:
+          profile: minimal
+          modules: canonical-artifacts
+          values: |
+            repo-name=swift-package-template
+            package-name=swift-package-template
+      - name: Check out the organization standard
+        if: ${{ !cancelled() }}
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          repository: swift-library/.github
+          ref: de32a47ae8a1ddc997d068838d8390fa863c3708
+          path: .upstreams/standard
+          sparse-checkout: |
+            LICENSE.txt
+            DESIGN.md
+          sparse-checkout-cone-mode: false
+          persist-credentials: false
+      - name: Compare LICENSE.txt with the organization standard
+        if: ${{ !cancelled() }}
+        run: diff -u .upstreams/standard/LICENSE.txt LICENSE.txt
+      - name: Check out the icon generator
+        if: ${{ !cancelled() }}
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          repository: showxu/skills
+          ref: 36707036061a2d0ba012184ef0b6d6820082127f
+          path: .upstreams/icons
+          sparse-checkout: skills/apple-framework-icon-design/scripts
+          persist-credentials: false
+      - name: Compare the logo with its DESIGN.md entry
+        if: ${{ !cancelled() }}
+        run: >-
+          python3 -B .upstreams/icons/skills/apple-framework-icon-design/scripts/design_icons.py
+          .upstreams/standard/DESIGN.md --check swift-package-template=Documentation/Assets/Logo.svg
