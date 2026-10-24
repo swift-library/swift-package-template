@@ -14,9 +14,9 @@ owner, data flow, and validation.
 - Deliver the complete requested behavior with bounded design. Do not stop at a
   toy result when production behavior is requested, and do not add abstraction,
   configurability, workflow machinery, or future-facing features unless the
-  request, source evidence, or owning invariant requires them.
+  request, a cited source, or the owning invariant requires them.
 - Change the owning layer, not the nearest convenient file.
-- Keep changes traceable to the request, source evidence, or owning invariant.
+- Keep changes traceable to the request, a cited source, or the owning invariant.
 - Do not clean up, reformat, rename, or refactor unrelated nearby material
   unless it is required by the request or owning invariant.
 - Use the strongest feasible validation for the result. If validation is
@@ -109,7 +109,7 @@ input, one fixture, one runtime run, one user-specific path, or temporary
 execution state.
 
 Keep shipped documentation focused on current product facts, supported behavior,
-and operating guidance. Keep temporary implementation notes, local evidence,
+and operating guidance. Keep temporary implementation notes, check logs,
 local paths, run-specific artifacts, and historical comparison notes out of
 README files, Reference docs, API docs, and bundled user-facing skills. Promote
 only accepted decision records into
