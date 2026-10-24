@@ -63,14 +63,14 @@ accepted artifact; rebuilding changes its identity and requires the affected
 acceptance again. Publish changed components in dependency order after their
 candidate combination has passed.>
 
-## Evidence Reuse and Invalidation
+## Result Reuse and Invalidation
 
-<Identify the trusted evidence source and its validation mechanism. Bind stage
-results to source, dependencies, check definitions, toolchain, environment,
-target configuration and artifact digests. Reuse only successful evidence with
+<Identify where stage results come from and how they are validated. Bind each
+result to source, dependencies, check definitions, toolchain, environment,
+target configuration and artifact digests. Reuse only successful results with
 matching inputs and verified provenance. Reject missing, modified or untrusted
 receipts. Changed inputs invalidate affected stages and their downstream results.
-Installation evidence identifies the actual package and cannot be replaced by
+An installation check identifies the actual package and cannot be replaced by
 source tests. Preserve failed results, timings and bounded retry decisions.
 Distinguish artifact inputs from checker inputs: identify when check-only changes
 can reuse the same artifact with fresh affected checks. Explain which source,
@@ -89,6 +89,6 @@ or claim automation that does not exist.>
 | Cleanup | <actual entry or manual inventory and removal> | <actual access> |
 
 <Define run ownership and safe cleanup of reproducible caches and temporary
-outputs. Preserve unique source changes, required evidence, active processes,
+outputs. Preserve unique source changes, required results, active processes,
 production data and necessary rollback artifacts. Keep private paths and
 individual run status in local records, outside this normative document.>
