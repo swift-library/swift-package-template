@@ -35,8 +35,8 @@ its `upstreams` job fails when a file differs from what that commit produces.
 | `LICENSE.txt` | `LICENSE.txt` in swift-library/.github | The `ref` of the organization standard checkout |
 | `Documentation/Assets/Logo.svg`, `Documentation/Assets/Logo.png` | The `swift-package-template` entry in the swift-library/.github `DESIGN.md`, rendered by `apple-framework-icon-design` in showxu/skills | The `ref`s of the organization standard and icon generator checkouts |
 
-The job compares the logo's SVG; the PNG is its 1024 px rendering and is
-regenerated with it.
+The job compares the logo's SVG. The PNG is its 1024 px rendering, and both
+are regenerated together.
 
 The CI, release and source policy workflows call swift-library/github-workflows
 at the commit their `uses:` lines name, and that pin is their only declaration.

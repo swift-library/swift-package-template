@@ -30,7 +30,7 @@ jobs:
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           repository: swift-library/.github
-          ref: de32a47ae8a1ddc997d068838d8390fa863c3708
+          ref: 8c236cdc897e490480fd150ce37ce16ccddfb83e
           path: .upstreams/standard
           sparse-checkout: |
             LICENSE.txt
